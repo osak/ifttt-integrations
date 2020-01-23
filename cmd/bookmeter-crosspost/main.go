@@ -21,6 +21,7 @@ type Payload struct {
 type bookInfo struct {
 	title  string
 	author string
+	url    string
 	review string
 }
 
@@ -41,6 +42,7 @@ func parseReviewPage(doc *html.Node) (bookInfo, error) {
 	}
 
 	var blob struct {
+		Path     string `json:"path"`
 		Content  string `json:"content"`
 		Contents struct {
 			Book struct {
@@ -59,6 +61,7 @@ func parseReviewPage(doc *html.Node) (bookInfo, error) {
 	return bookInfo{
 		title:  blob.Contents.Book.Title,
 		author: blob.Contents.Book.Author.Name,
+		url:    fmt.Sprintf("https://bookmeter.com%s", blob.Path),
 		review: blob.Content,
 	}, nil
 }
@@ -71,9 +74,15 @@ func parseBookPage(doc *html.Node) (bookInfo, error) {
 	titleNode := nodes[len(nodes)-1]
 	authorNode := nodes[len(nodes)-2]
 
+	urlNode := htmlquery.FindOne(doc, "//meta[@property=\"og:url\"]/@content")
+	if urlNode == nil {
+		return bookInfo{}, fmt.Errorf("cannot find og:url")
+	}
+
 	return bookInfo{
 		title:  htmlquery.InnerText(titleNode),
 		author: htmlquery.InnerText(authorNode),
+		url:    htmlquery.InnerText(urlNode),
 		review: "を読んだ",
 	}, nil
 }

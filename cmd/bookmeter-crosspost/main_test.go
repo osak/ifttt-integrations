@@ -25,6 +25,7 @@ func TestParseReviewPage(t *testing.T) {
 
 	assert.Equal(t, "いま世界の哲学者が考えていること", info.title)
 	assert.Equal(t, "岡本 裕一朗", info.author)
+	assert.Equal(t, "https://bookmeter.com/reviews/86797920", info.url)
 	assert.Equal(t, "現代の哲学における主要なトピックを広く浅くまとめた本。読み口はかなり軽いので、とりあえずざっと読んで興味の糸口を探すといいと思う。「ポストモダン以後」の思想をまとめた第1章は自分が最近考えていることに合っていて、次に掘り下げるべきキーワードが分かったので良かった。", info.review)
 }
 
@@ -46,5 +47,6 @@ func TestParseBookPage(t *testing.T) {
 
 	assert.Equal(t, "異種族レビュアーズ　4 (ドラゴンコミックスエイジ)", info.title)
 	assert.Equal(t, "masha", info.author)
+	assert.Equal(t, "https://bookmeter.com/books/15048420", info.url)
 	assert.Equal(t, "を読んだ", info.review)
 }
