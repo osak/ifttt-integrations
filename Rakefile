@@ -8,4 +8,12 @@ task :"foursquare-crosspost", ["pkg"] do
   end
 end
 
+task :"bookmeter-crosspost", ["pkg"] do
+  sh "go build -o pkg/bookmeter-crosspost ./cmd/bookmeter-crosspost"
+  Dir.mktmpdir do |dir|
+    cp "pkg/bookmeter-crosspost", "#{dir}/main"
+    sh "zip -j pkg/bookmeter-crosspost.zip #{dir}/main"
+  end
+end
+
 directory "pkg"
