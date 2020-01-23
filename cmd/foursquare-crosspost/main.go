@@ -1,10 +1,9 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/mattn/go-mastodon"
+	"ifttt-integrations/internal/mastodon"
 	"log"
 )
 
@@ -15,12 +14,8 @@ type Payload struct {
 }
 
 func shareMastodon(message string) error {
-	client := NewMastodonClient()
-	toot := &mastodon.Toot{
-		Status: message,
-	}
-	_, err := client.PostStatus(context.Background(), toot)
-	return err
+	client := mastodon.NewMastodonClient()
+	return client.Post(message)
 }
 
 func HandleRequest(payload Payload) error {
