@@ -113,7 +113,7 @@ func HandleRequest(payload Payload) error {
 
 	log.Printf("%v", info)
 
-	message := fmt.Sprintf("【%s/%s】%s %s", info.title, info.author, info.review, payload.Url)
+	message := fmt.Sprintf("【%s/%s】%s %s", info.title, info.author, info.review, info.url)
 	client := mastodon.NewMastodonClient()
 	if err := client.Post(message); err != nil {
 		log.Printf("Failed to post to Mastodon: %v", err)
