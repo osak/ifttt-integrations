@@ -102,7 +102,7 @@ func HandleRequest(payload Payload) error {
 	}
 
 	var info bookInfo
-	if strings.Contains(payload.Url, "reviews") {
+	if strings.Contains(res.Request.URL.Path, "reviews") {
 		info, err = parseReviewPage(doc)
 	} else {
 		info, err = parseBookPage(doc)
