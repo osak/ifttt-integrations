@@ -16,4 +16,13 @@ task :"bookmeter-crosspost", ["pkg"] do
   end
 end
 
+task :"switch-crosspost", ["pkg"] do
+  sh "GOOS=linux go build -o pkg/switch-crosspost ./cmd/switch-crosspost"
+  Dir.mktmpdir do |dir|
+    cp "pkg/switch-crosspost", "#{dir}/main"
+    sh "zip -j pkg/switch-crosspost.zip #{dir}/main"
+  end
+end
+
+
 directory "pkg"

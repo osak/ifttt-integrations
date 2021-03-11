@@ -2,8 +2,9 @@ package mastodon
 
 import (
 	"context"
-	"github.com/mattn/go-mastodon"
 	"os"
+
+	"github.com/mattn/go-mastodon"
 )
 
 type Client struct {
@@ -32,4 +33,27 @@ func (c *Client) Post(message string) error {
 	}
 	_, err := c.client.PostStatus(context.Background(), toot)
 	return err
+}
+
+func (c *Client) PostImages(message string, filenames []string) error {
+	mediaIDs := make([]mastodon.ID, len(filenames))
+	for i := 0; i < len(filenames); i += 1 {
+		id, err := c.UploadImage(filenames[i])
+		if err != nil {
+			return err
+		}
+		mediaIDs[i] = id
+	}
+
+	toot := &mastodon.Toot{
+		Status:   message,
+		MediaIDs: mediaIDs,
+	}
+	_, err := c.client.PostStatus(context.Background(), toot)
+	return err
+}
+
+func (c *Client) UploadImage(filename string) (mastodon.ID, error) {
+	attachment, err := c.client.UploadMedia(context.Background(), filename)
+	return attachment.ID, err
 }
